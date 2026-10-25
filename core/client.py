@@ -34,14 +34,13 @@ class HTTPClient:
                             max_retries)
                 
                 response = self.session.get(url, params=params, timeout=timeout)
-                #after this an exception may be raised, if not, continue
 
                 if response.status_code in retryable_statuses:
                     
                     if attempt == max_retries:
-                        response.raise_for_status() #raises an HTTP error which is caught when making a request
+                        response.raise_for_status() 
 
-                    retry_after = response.headers.get("Retry-After") #site's recommend retry time
+                    retry_after = response.headers.get("Retry-After") 
 
                     try:
                         delay = float(retry_after) if retry_after else 2**(attempt)  
@@ -58,17 +57,17 @@ class HTTPClient:
                                 max_retries,
                                 delay)
 
-                    time.sleep(delay) #the actual wait time
+                    time.sleep(delay) 
                     continue 
 
-                #unsuccefful status code that we dont want to retry
+                
                 response.raise_for_status()
 
                 logger.info("Request secceeded: %s (HTTP %d)",
                             url,
                             response.status_code)
 
-                return response #actual correct response
+                return response 
 
             except (requests.Timeout, requests.ConnectionError) as exc:
                 if attempt == max_retries: 
