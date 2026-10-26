@@ -11,3 +11,20 @@ def validate_record(record: dict, fields: dict):
         else:
             return False
     return False    
+
+def find_duplicates(data: list[dict], fields: list) -> list:
+
+    values = []
+    duplicates = []
+
+    try:
+        for record in data:    
+            value = tuple(record[field] for field in fields)
+            if value not in values: 
+                values.append(value)
+            else:
+                duplicates.append(record)
+    except ValueError:
+        raise ValueError("Field not found in record")           
+
+    return duplicates            
