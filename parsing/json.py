@@ -1,4 +1,4 @@
-def validate_record(record: dict, fields: dict):
+def validate_record(record: dict, fields: dict[str:type]):
 
     if isinstance(record, dict) and fields is not None:
         if fields.keys() <= record.keys():
